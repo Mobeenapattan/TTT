@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Converted Result</title>
+</head>
+<body>
+  <h1>Converted Amount</h1>
+  <p id="result">Calculating...</p>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const amount = parseFloat(urlParams.get('amount'));
+    const from = urlParams.get('from');
+    const to = urlParams.get('to');
+
+    // Example static exchange rates
+    const rates = {
+      USD: { INR: 83, EUR: 0.93, GBP: 0.79 },
+      INR: { USD: 0.012, EUR: 0.011, GBP: 0.0095 },
+      EUR: { USD: 1.07, INR: 89.3, GBP: 0.85 },
+      GBP: { USD: 1.26, INR: 104.5, EUR: 1.17 }
+    };
+
+    function convert(amount, from, to) {
+      if (from === to) return amount;
+      const rate = rates[from] && rates[from][to];
+      return rate ? (amount * rate).toFixed(2) : "Conversion rate not available";
+    }
+
+    const converted = convert(amount, from, to);
+    document.getElementById("result").innerText = 
+      isNaN(amount) ? "Invalid input." : `${amount} ${from} = ${converted} ${to}`;
+  </script>
+</body>
+</html>
